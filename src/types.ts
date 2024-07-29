@@ -21,6 +21,7 @@ export interface CityGeo {
   city: string;
   name: string;
   countryCode: string;
+  country: string;
   latitude: number;
   longitude: number;
 }

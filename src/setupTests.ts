@@ -18,6 +18,7 @@ const server = setupServer(
           city: "New York",
           name: "New York",
           countryCode: "US",
+          country: "United States of America",
           latitude: 40.7128,
           longitude: -74.006,
         },

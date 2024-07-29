@@ -13,12 +13,7 @@ import WeatherContext from "./components/Weather/WeatherContext";
 function App() {
   const [city, setCity] = useState<CityState | null>(null);
 
-  const [lat, lon] = city ? city.value.split(" ") : ["", ""];
   const { addCity, favorites, removeCity } = useWeatherFavorites();
-
-  const handleSelectFavorite = (city: CityState) => {
-    setCity(city);
-  };
 
   const handleSettingCity = (city: CityState | null) => {
     setCity(city);
@@ -35,7 +30,7 @@ function App() {
       }}
     >
       <Box sx={{ flexGrow: 1 }}>
-        <SearchLocation city={city} setCity={setCity} />
+        <SearchLocation />
         <Grid container spacing={2}>
           <Grid item xs={4}>
             <Favorites />

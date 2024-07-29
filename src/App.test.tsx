@@ -30,4 +30,13 @@ test("renders App Component", async () => {
   const weather = screen.getByTestId("weather");
 
   expect(weather).toBeTruthy();
+
+  const weatherTitle = screen.getByTestId("weather-title");
+
+  expect(weatherTitle.textContent).toBe(
+    "Current Weather in New York, United States of America"
+  );
+
+  // add tests to test favorites
+  // tests to test metric checkbox
 });

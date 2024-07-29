@@ -1,20 +1,5 @@
 import { createContext, useContext } from "react";
-import { CityState, WeatherResponse } from "../../types";
-import { WEATHER_API } from "../../consts";
-
-const WEATHER_API_KEY = process.env.WEATHER_API_KEY;
-
-async function fetchWeather(
-  lat: string,
-  lon: string
-): Promise<WeatherResponse> {
-  const res = await fetch(
-    `${WEATHER_API}?units=metric&lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}`
-  );
-  const res_1 = await res.json();
-
-  return res_1;
-}
+import { CityState } from "../../types";
 
 interface WeatherContext {
   addCityToFavorites: (city: CityState) => void;

@@ -1,14 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
-import { WeatherResponse } from "../types";
 import { getCityState } from "../utils/helpers";
-import { CITIES_API, WEATHER_API } from "../consts";
+import { CITIES_API } from "../consts";
 
 const RAPID_API_KEY = process.env.RAPID_API_KEY;
-const WEATHER_API_KEY = process.env.WEATHER_API_KEY;
 
 interface CityGeo {
   city: string;
   name: string;
+  country: string;
   countryCode: string;
   latitude: number;
   longitude: number;
@@ -29,7 +27,8 @@ function getUniqueCities(data: CityGeo[]) {
   return result;
 }
 
-async function fetchGeo(prefix: string) {
+// to refactor, file name not corresponds to the actual implementation
+export default async function fetchGeo(prefix: string) {
   const res = await fetch(`${CITIES_API}&namePrefix=${prefix}`, {
     method: "GET",
     headers: {
@@ -38,35 +37,10 @@ async function fetchGeo(prefix: string) {
       "x-rapidapi-host": "wft-geo-db.p.rapidapi.com",
     } as any,
   });
-  const res_1 = await res.json();
+  const json = await res.json();
   return {
-    options: getUniqueCities(res_1.data).map((item: CityGeo) =>
+    options: getUniqueCities(json.data).map((item: CityGeo) =>
       getCityState(item)
     ),
   };
 }
-
-async function fetchWeather(
-  lat: string,
-  lon: string
-): Promise<WeatherResponse> {
-  const res = await fetch(
-    `${WEATHER_API}?units=metric&lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}`
-  );
-  const res_1 = await res.json();
-
-  return res_1;
-}
-
-function useWeather(lat: string, lon: string) {
-  const query = useQuery<WeatherResponse>({
-    queryKey: ["weather", lat, lon],
-    queryFn: () => {
-      return fetchWeather(lat, lon);
-    },
-  });
-
-  return query;
-}
-
-export { useWeather, fetchGeo };

@@ -1,13 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { Card } from "@mui/material";
-import { useWeather } from "../../hooks/useGeo";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import FormControlLabel from "@mui/material/FormControlLabel";
+
+import Checkbox from "@mui/material/Checkbox";
+
 import { useWeatherContext } from "./WeatherContext";
+import useWeather from "../../hooks/useWeather";
+import { toggleMetric } from "../../utils/helpers";
 
 export default function Weather() {
   const { addCityToFavorites, city } = useWeatherContext();
+
+  const [metric, setMetric] = useState(true);
 
   const [lat, lon] = city ? city.value.split(" ") : ["", ""];
 
@@ -19,9 +26,15 @@ export default function Weather() {
     }
   };
 
+  const handleOnChange = () => {
+    setMetric(!metric);
+  };
+
   if (isLoading || data == undefined) {
     return <div>...loading</div>;
   }
+
+  const formattedData = toggleMetric(data, metric);
 
   return (
     <Card
@@ -29,9 +42,17 @@ export default function Weather() {
       sx={{ marginTop: "10px", p: "20px" }}
       variant="outlined"
     >
-      <Typography variant="h5" gutterBottom>
+      <Typography variant="h5" gutterBottom data-testid="weather-title">
         Current Weather in {city?.label}
       </Typography>
+
+      <FormControlLabel
+        control={
+          <Checkbox defaultChecked onChange={handleOnChange} checked={metric} />
+        }
+        label="Metric"
+      />
+
       <div className="weather-summary">
         <div>
           <Typography
@@ -56,7 +77,8 @@ export default function Weather() {
             Max Temp:
           </Typography>
           <Typography variant="body2" display="inline-block" gutterBottom>
-            {data.main.temp_max} &deg;
+            {formattedData.main.temp_max}{" "}
+            {metric ? <span>&#8451;</span> : <span>&#8457;</span>}
           </Typography>
         </div>
 
@@ -70,7 +92,8 @@ export default function Weather() {
             Min Temp:
           </Typography>
           <Typography variant="body2" display="inline-block" gutterBottom>
-            {data.main.temp_min} &deg;
+            {formattedData.main.temp_min}{" "}
+            {metric ? <span>&#8451;</span> : <span>&#8457;</span>}
           </Typography>
         </div>
 
