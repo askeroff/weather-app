@@ -41,6 +41,7 @@ export function useWeatherFavorites() {
       (existing: CityState) => existing.value == city.value
     );
     if (alreadyHas) {
+      // add notifications system
       console.log("ALREADY EXISTS");
 
       return;

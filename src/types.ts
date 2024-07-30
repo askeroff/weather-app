@@ -3,6 +3,15 @@ export interface CityState {
   label: string;
 }
 
+export interface CityGeo {
+  city: string;
+  name: string;
+  country: string;
+  countryCode: string;
+  latitude: number;
+  longitude: number;
+}
+
 export interface WeatherResponse {
   main: {
     temp_max: number;
@@ -15,13 +24,4 @@ export interface WeatherResponse {
   weather: Array<{
     description: string;
   }>;
-}
-
-export interface CityGeo {
-  city: string;
-  name: string;
-  countryCode: string;
-  country: string;
-  latitude: number;
-  longitude: number;
 }

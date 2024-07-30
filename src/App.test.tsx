@@ -1,6 +1,6 @@
 import React from "react";
 import { screen, fireEvent, waitFor } from "@testing-library/react";
-import { render } from "./utils/test-utils";
+import { renderWithQueryWrapper } from "./utils/test-utils";
 import "@testing-library/jest-dom";
 
 jest.mock("./consts");
@@ -8,13 +8,15 @@ jest.mock("./consts");
 import App from "./App";
 
 test("renders App Component", async () => {
-  render(<App />);
+  renderWithQueryWrapper(<App />);
 
   const searchInput = screen.getByRole("combobox");
 
   fireEvent.change(searchInput, { target: { value: "New York" } });
 
   fireEvent.focus(searchInput);
+
+  // find and select new york
 
   await waitFor(() => screen.getAllByRole("option"));
 

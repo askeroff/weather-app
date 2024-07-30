@@ -1,16 +1,8 @@
-import { getCityState } from "../utils/helpers";
-import { CITIES_API } from "../consts";
+import { getCityState } from "./utils/helpers";
+import { CITIES_API, WEATHER_API } from "./consts";
+import { CityGeo, WeatherResponse } from "./types";
 
 const RAPID_API_KEY = process.env.RAPID_API_KEY;
-
-interface CityGeo {
-  city: string;
-  name: string;
-  country: string;
-  countryCode: string;
-  latitude: number;
-  longitude: number;
-}
 
 function getUniqueCities(data: CityGeo[]) {
   let hash: any = {};
@@ -28,7 +20,7 @@ function getUniqueCities(data: CityGeo[]) {
 }
 
 // to refactor, file name not corresponds to the actual implementation
-export default async function fetchGeo(prefix: string) {
+export async function fetchGeo(prefix: string) {
   const res = await fetch(`${CITIES_API}&namePrefix=${prefix}`, {
     method: "GET",
     headers: {
@@ -43,4 +35,18 @@ export default async function fetchGeo(prefix: string) {
       getCityState(item)
     ),
   };
+}
+
+const WEATHER_API_KEY = process.env.WEATHER_API_KEY;
+
+export async function fetchWeather(
+  lat: string,
+  lon: string
+): Promise<WeatherResponse> {
+  const res = await fetch(
+    `${WEATHER_API}?units=metric&lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}`
+  );
+  const json = await res.json();
+
+  return json;
 }

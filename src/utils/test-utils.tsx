@@ -5,7 +5,7 @@ import { render } from "@testing-library/react";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: false, // disable retries to make tests fail fast
+      retry: false,
     },
   },
 });
@@ -14,11 +14,7 @@ const QueryWrapper = ({ children }: { children: ReactNode }) => (
   <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 );
 
-const customRender = (ui: React.ReactElement, options = {}) =>
+const renderWithQueryWrapper = (ui: React.ReactElement, options = {}) =>
   render(ui, { wrapper: QueryWrapper, ...options });
 
-// re-export everything from @testing-library/react
-export * from "@testing-library/react";
-
-// override render method
-export { customRender as render };
+export { renderWithQueryWrapper };

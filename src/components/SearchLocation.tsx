@@ -3,7 +3,7 @@ import React from "react";
 import { AsyncPaginate } from "react-select-async-paginate";
 import { DEBOUNCE_INPUT_TIMEOUT } from "../consts";
 import { useWeatherContext } from "./Weather/WeatherContext";
-import fetchGeo from "../hooks/useGeo";
+import { fetchGeo } from "../api";
 
 export default function SearchLocation() {
   const { city, setCity } = useWeatherContext();

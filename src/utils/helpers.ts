@@ -11,10 +11,6 @@ function convertToFahrenheit(celcius: number) {
   return (celcius * (9 / 5) + 32).toFixed(2);
 }
 
-// export function convertToCelcius(fahrenheit: number) {
-//   return ((fahrenheit - 32) * 5) / 9;
-// }
-
 export function toggleMetric(data: WeatherResponse, metric: boolean) {
   return {
     ...data,

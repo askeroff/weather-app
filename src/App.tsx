@@ -32,10 +32,10 @@ function App() {
       <Box sx={{ flexGrow: 1 }}>
         <SearchLocation />
         <Grid container spacing={2}>
-          <Grid item xs={4}>
+          <Grid item xs={12} md={4}>
             <Favorites />
           </Grid>
-          <Grid item xs={8}>
+          <Grid item xs={12} md={8}>
             {city && <Weather />}
           </Grid>
         </Grid>

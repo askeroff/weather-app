@@ -1,15 +1,22 @@
-import React, { useState } from "react";
+import React, { CSSProperties, useState } from "react";
 
 import { Card } from "@mui/material";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import HashLoader from "react-spinners/HashLoader";
 
 import Checkbox from "@mui/material/Checkbox";
 
 import { useWeatherContext } from "./WeatherContext";
 import useWeather from "../../hooks/useWeather";
 import { toggleMetric } from "../../utils/helpers";
+
+const override: CSSProperties = {
+  display: "block",
+  margin: "20px auto 0",
+  borderColor: "red",
+};
 
 export default function Weather() {
   const { addCityToFavorites, city } = useWeatherContext();
@@ -20,10 +27,12 @@ export default function Weather() {
 
   const { data, isLoading } = useWeather(lat, lon);
 
+  if (!city) {
+    throw new Error("This component should be rendered only when city is set");
+  }
+
   const handleOnAdd = () => {
-    if (city) {
-      addCityToFavorites(city);
-    }
+    addCityToFavorites(city);
   };
 
   const handleOnChange = () => {
@@ -31,7 +40,16 @@ export default function Weather() {
   };
 
   if (isLoading || data == undefined) {
-    return <div>...loading</div>;
+    return (
+      <HashLoader
+        color="green"
+        loading={isLoading}
+        cssOverride={override}
+        size={50}
+        aria-label="Loading Spinner"
+        data-testid="loader"
+      />
+    );
   }
 
   const formattedData = toggleMetric(data, metric);
@@ -43,13 +61,11 @@ export default function Weather() {
       variant="outlined"
     >
       <Typography variant="h5" gutterBottom data-testid="weather-title">
-        Current Weather in {city?.label}
+        Current Weather in {city.label}
       </Typography>
 
       <FormControlLabel
-        control={
-          <Checkbox defaultChecked onChange={handleOnChange} checked={metric} />
-        }
+        control={<Checkbox onChange={handleOnChange} checked={metric} />}
         label="Metric"
       />
 
